@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "main.go",
   "scripts": {
-    "gow": "gow run"
+    "gow": "~/go/bin/gow run"
   },
   "repository": {
     "type": "git",
@@ -15,8 +15,5 @@
     "url": "https://github.com/AlexDev404/ubit-newsletter/issues"
   },
   "homepage": "https://github.com/AlexDev404/ubit-newsletter#readme",
-  "description": "",
-  "dependencies": {
-    "gow": "^1.13.1"
-  }
+  "description": ""
 }
