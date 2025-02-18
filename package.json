@@ -1,0 +1,22 @@
+{
+  "name": "ubit-newsletter",
+  "version": "1.0.0",
+  "main": "main.go",
+  "scripts": {
+    "gow": "gow run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlexDev404/ubit-newsletter.git"
+  },
+  "author": "AlexDev404",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AlexDev404/ubit-newsletter/issues"
+  },
+  "homepage": "https://github.com/AlexDev404/ubit-newsletter#readme",
+  "description": "",
+  "dependencies": {
+    "gow": "^1.13.1"
+  }
+}
