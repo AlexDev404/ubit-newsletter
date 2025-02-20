@@ -8,8 +8,8 @@ import (
 	"os"       // Package os provides a platform-independent interface to operating system functionality.
 )
 
-type config struct {
-	slog.Logger
+type application struct {
+	logger *slog.Logger
 }
 
 func home(w http.ResponseWriter, r *http.Request) {
@@ -25,9 +25,10 @@ func main() {
 
 	// Create a new logger
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
+	application := &application{logger: logger}
 
 	// Log the port the server is starting on
-	logger.Info("Starting server on ", "addr", *port)
+	application.logger.Info("Starting server on ", "addr", *port)
 
 	err := http.ListenAndServe(":"+*port, server)
 	// Log any errors that occur
