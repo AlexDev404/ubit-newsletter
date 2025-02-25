@@ -12,8 +12,12 @@ type application struct {
 	logger *slog.Logger
 }
 
-func home(w http.ResponseWriter, r *http.Request) {
+func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Hello from UBIT newsletter"))
+}
+
+func (app *application) about(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("About UBIT newsletter"))
 }
 
 func main() {
@@ -21,11 +25,12 @@ func main() {
 	flag.Parse()
 	// Create a new HTTP server
 	server := http.NewServeMux()
-	server.HandleFunc("/", home)
-
 	// Create a new logger
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
 	application := &application{logger: logger}
+
+	server.HandleFunc("/", application.home)
+	server.HandleFunc("/about", application.about)
 
 	// Log the port the server is starting on
 	application.logger.Info("Starting server on ", "addr", *port)
