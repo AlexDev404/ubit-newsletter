@@ -2,18 +2,37 @@
 package main
 
 import (
-	"flag"     // Package flag implements command-line flag parsing.
-	"log/slog" // Package log implements a simple logging package.
-	"net/http" // Package http provides HTTP client and server implementations.
-	"os"       // Package os provides a platform-independent interface to operating system functionality.
+	"flag"          // Package flag implements command-line flag parsing.
+	"html/template" // Package template implements data-driven templates for generating textual output.
+	"log/slog"      // Package log implements a simple logging package.
+	"net/http"      // Package http provides HTTP client and server implementations.
+	"os"            // Package os provides a platform-independent interface to operating system functionality.
 )
 
 type application struct {
 	logger *slog.Logger
 }
 
+var data = map[string]string{
+	"Title":    "Hello from Go",
+	"Greeting": "Hello, World!",
+	"Message":  "This is the body of the page",
+}
+
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Hello from UBIT newsletter"))
+	tmpl, err := template.ParseFiles("ui/html/home.mustache")
+	if err != nil {
+		app.logger.Info(err.Error())
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+	err = tmpl.Execute(w, data)
+	if err != nil {
+		app.logger.Info(err.Error())
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+
 }
 
 func (app *application) about(w http.ResponseWriter, r *http.Request) {
