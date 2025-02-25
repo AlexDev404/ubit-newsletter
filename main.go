@@ -3,6 +3,7 @@ package main
 
 import (
 	"flag"          // Package flag implements command-line flag parsing.
+	"fmt"           // Package fmt implements formatted I/O with functions analogous to C's printf and scanf.
 	"html/template" // Package template implements data-driven templates for generating textual output.
 	"log/slog"      // Package log implements a simple logging package.
 	"net/http"      // Package http provides HTTP client and server implementations.
@@ -11,6 +12,11 @@ import (
 
 type application struct {
 	logger *slog.Logger
+}
+
+type templateData struct {
+	Title    string
+	Greeting string
 }
 
 var data = map[string]string{
@@ -32,7 +38,20 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
+}
 
+func (app *application) viewTemplate(w http.ResponseWriter, r *http.Request) {
+	path := r.URL.Path[len("template/"):]
+	fmt.Println("--------- ", path)
+	fileName := fmt.Sprintf("%s.%s", path, "mustache")
+
+	// p := templateData{
+	// 	Title:    "Go Study",
+	// 	Greeting: "Hello World Study Mates",
+	// }
+
+	// t, _ := template.ParseFiles(fileName)
+	// t.Execute(w, p)
 }
 
 func (app *application) about(w http.ResponseWriter, r *http.Request) {
@@ -50,6 +69,7 @@ func main() {
 
 	server.HandleFunc("/", application.home)
 	server.HandleFunc("/about", application.about)
+	server.HandleFunc("/template/", application.viewTemplate)
 
 	// Log the port the server is starting on
 	application.logger.Info("Starting server on ", "addr", *port)
